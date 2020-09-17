@@ -1,0 +1,16 @@
+---
+- name: Ensure sshd_config setting
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item }}"
+    line: "{{ sshd_settings[item] }}"
+    state: present
+  notify: restart ssh
+  with_items:
+    - "{{ sshd_settings | list }}"
+
+- name: Start ssh
+  service:
+    name: ssh
+    state: started
+    enabled: yes

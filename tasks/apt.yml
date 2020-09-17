@@ -1,0 +1,29 @@
+---
+- name: Update APT package cache
+  apt:
+    update_cache: true
+    force_apt_get: true
+    cache_valid_time: 3600
+
+- name: Install aptitude
+  apt:
+    pkg: aptitude
+    state: present
+
+- name: Upgrade APT to the latest packages
+  apt:
+    upgrade: safe
+
+- name: Install required packages
+  apt:
+    state: present
+    pkg: "{{ packages }}"
+    update_cache: yes
+
+- name: Adjust APT update intervals
+  copy:
+    src: etc/apt/apt.conf.d/10periodic
+    dest: /etc/apt/apt.conf.d/10periodic
+    owner: root
+    group: root
+    mode: 0644

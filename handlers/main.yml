@@ -1,0 +1,20 @@
+---
+- name: restart ntpd
+  service:
+    name: "openntpd"
+    state: restarted
+
+- name: restart ssh
+  service:
+    name: ssh
+    state: restarted
+
+- name: restart sshguard
+  service:
+    name: "{{ sshguard_service }}"
+    state: restarted
+
+- name: restart firewall
+  service:
+    name: firewall
+    state: restarted

@@ -1,0 +1,16 @@
+---
+- name: Add ntpd.conf
+  lineinfile:
+    dest: "/etc/openntpd/ntpd.conf"
+    regexp: "{{ item }}"
+    line: "{{ ntp_settings[item] }}"
+    state: present
+  notify: restart ntpd
+  with_items:
+    - "{{ ntp_settings | list }}"
+
+- name: Start ntpd
+  service:
+    name: openntpd
+    state: started
+    enabled: yes

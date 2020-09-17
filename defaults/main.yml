@@ -1,0 +1,106 @@
+---
+# User settings
+deploy_user: "ansible"
+deploy_user_uid: 9999
+deploy_user_shell: "/bin/bash"
+deploy_user_home: "/home/{{ deploy_user }}"
+
+# packages installed
+packages:
+  - sshguard
+  - unattended-upgrades
+  - sudo
+  - openntpd
+  - openssh-server
+  - netfilter-persistent
+  - iptables-persistent
+
+# openntpd settings
+ntp_settings:
+  "^servers 0": "servers 0.debian.pool.ntp.org"
+  "^servers 1": "servers 1.debian.pool.ntp.org"
+  "^servers 2": "servers 2.debian.pool.ntp.org"
+  "^servers 3": "servers 3.debian.pool.ntp.org"
+
+# sshd settings
+sshd_settings:
+  "^PasswordAuthentication": "PasswordAuthentication no"
+  "^PermitRootLogin": "PermitRootLogin no"
+  "^PermitTunnel": "PermitTunnel no"
+  "^Port ": "Port 12022"
+
+# sshguard settings
+sshguard_block_time: 120
+sshguard_detection_time: 1800
+sshguard_threshold: 30
+
+sshguard_config_items:
+  - sshguard.conf
+  - whitelist
+
+sshguard_config_path: /etc/sshguard
+
+sshguard_service: sshguard
+sshguard_service_enabled: yes
+sshguard_service_state: started
+
+sshguard_whitelist:
+  - comment: IPv4 localhost
+    address: 127.0.0.0/8
+  - comment: IPv6 localhost
+    address: ::1
+
+sshguard_backend: /usr/lib/x86_64-linux-gnu/sshg-fw-nft-sets
+sshguard_logreader: "LANG=C /bin/journalctl -afb -p info -n1 -o cat SYSLOG_FACILITY=4 SYSLOG_FACILITY=10"
+
+# sysctl settings. For more options, consult the relevant CIS guide
+sysctl_settings:
+  "net.ipv4.tcp_syncookies": 1
+  "net.ipv4.conf.all.accept_source_route": 0
+  "net.ipv6.conf.all.accept_source_route": 0
+  "net.ipv4.conf.default.accept_source_route": 0
+  "net.ipv6.conf.default.accept_source_route": 0
+  "net.ipv4.conf.all.accept_redirects": 0
+  "net.ipv6.conf.all.accept_redirects": 0
+  "net.ipv4.conf.default.accept_redirects": 0
+  "net.ipv6.conf.default.accept_redirects": 0
+  "net.ipv4.conf.all.secure_redirects": 1
+  "net.ipv4.conf.default.secure_redirects": 1
+  "net.ipv4.ip_forward": 0
+  "net.ipv6.conf.all.forwarding": 0
+  "net.ipv4.conf.all.send_redirects": 0
+  "net.ipv4.conf.default.send_redirects": 0
+  "net.ipv4.conf.all.rp_filter": 1
+  "net.ipv4.conf.default.rp_filter": 1
+  "net.ipv4.icmp_echo_ignore_broadcasts": 1
+  "net.ipv4.icmp_ignore_bogus_error_responses": 1
+  "net.ipv4.icmp_echo_ignore_all": 0
+  "net.ipv4.conf.all.log_martians": 1
+  "net.ipv4.conf.default.log_martians": 1
+  "net.ipv4.tcp_rfc1337": 1
+  "kernel.randomize_va_space": 2
+  "fs.protected_hardlinks": 1
+  "fs.protected_symlinks": 1
+  "kernel.kptr_restrict": 1
+  "kernel.perf_event_paranoid": 2
+
+# iptables
+firewall_state: started
+firewall_enabled_at_boot: true
+
+firewall_flush_rules_and_chains: true
+
+firewall_allowed_tcp_ports:
+  - "12022"
+
+firewall_allowed_udp_ports: []
+firewall_forwarded_tcp_ports: []
+firewall_forwarded_udp_ports: []
+firewall_additional_rules: []
+firewall_enable_ipv6: true
+firewall_ip6_additional_rules: []
+firewall_log_dropped_packets: true
+
+# Set to true to ensure other firewall management software is disabled.
+firewall_disable_firewalld: true
+firewall_disable_ufw: true

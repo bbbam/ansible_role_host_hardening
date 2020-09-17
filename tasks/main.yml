@@ -1,0 +1,23 @@
+---
+- name: Delete root pw file /root/.pw
+  file:
+    path: /root/.pw
+    state: absent
+
+- name: Include required tasks for APT
+  include_tasks: apt.yml
+
+- name: Include required tasks for openntpd
+  include_tasks: openntpd.yml
+
+- name: Include required tasks for SSHd
+  include_tasks: ssh.yml
+
+- name: Include required tasks for iptables
+  include_tasks: iptables.yml
+
+- name: Include required tasks for sshguard
+  include_tasks: sshguard.yml
+
+- name: Include required tasks for deployment deployment user
+  include_tasks: user.yml

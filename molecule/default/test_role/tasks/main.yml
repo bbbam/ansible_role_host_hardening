@@ -1,0 +1,35 @@
+---
+- name: Ensure sshguard is installed
+  service:
+    name: sshguard
+    state: started
+    enabled: yes
+
+- name: Ensure ssh is installed
+  service:
+    name: ssh
+    state: started
+    enabled: yes
+
+- name: Ensure opennttpd is installed
+  service:
+    name: openntpd
+    state: started
+    enabled: yes
+
+- name: Get packages
+  package_facts:
+    manager: auto
+
+- name: Check iptables is installed
+  assert:
+    that: packages['iptables'] is defined
+
+- name: Get user if it exists
+  getent:
+    database: passwd
+    key: ansible
+
+- name: Assert ansible user exists
+  assert:
+    that: getent_passwd['ansible'] is defined
