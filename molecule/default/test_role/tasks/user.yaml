@@ -22,4 +22,4 @@
 
 - name: Assert authorized key is correct
   assert:
-    that: authorized_keys.std_out == "ssh-rsa JUNKKEY"
+    that: authorized_keys.stdout == "ssh-rsa JUNKKEY"
