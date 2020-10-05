@@ -1,4 +1,7 @@
 ---
+- name: Include tests for user
+  include_tasks: user.yaml
+
 - name: Ensure sshguard is installed
   service:
     name: sshguard
@@ -24,12 +27,3 @@
 - name: Check iptables is installed
   assert:
     that: packages['iptables'] is defined
-
-- name: Get user if it exists
-  getent:
-    database: passwd
-    key: ansible
-
-- name: Assert ansible user exists
-  assert:
-    that: getent_passwd['ansible'] is defined

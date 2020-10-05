@@ -22,6 +22,6 @@ provisioner:
     hosts:
       all:
         vars:
-          deploy_user_public_keys: molecule/default/junk_key
+          std_user_public_keys: molecule/default/test_key
 verifier:
   name: ansible

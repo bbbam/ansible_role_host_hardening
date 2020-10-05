@@ -1,9 +1,9 @@
 ---
 # User settings
-deploy_user: "ansible"
-deploy_user_uid: 9999
-deploy_user_shell: "/bin/bash"
-deploy_user_home: "/home/{{ deploy_user }}"
+std_user: "user"
+std_user_uid: 9999
+std_user_shell: "/bin/bash"
+std_user_home_dir: "/home/{{ std_user }}"
 
 # packages installed
 packages:
