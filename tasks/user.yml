@@ -1,26 +1,23 @@
 ---
-- name: Add deploy user
+- name: Create user
   user:
-    name: "{{ deploy_user }}"
-    password: "{{ lookup('password', '/tmp/mysqlpassword length=15') | password_hash('sha512') }}"
-    uid: "{{ deploy_user_uid }}"
-    shell: "{{ deploy_user_shell }}"
-    home: "{{ deploy_user_home }}"
+    name: "{{ std_user }}"
+    password: "{{ lookup('password', '/tmp/user_password length=15') | password_hash('sha512') }}"
+    uid: "{{ std_user_uid }}"
+    shell: "{{ std_user_shell }}"
+    home: "{{ std_user_home_dir }}"
     update_password: on_create
 
-
-- name: Add authorized keys for deploy user
+- name: Add authorized keys for user
   authorized_key:
-    user: "{{ deploy_user }}"
+    user: "{{ std_user }}"
     key: "{{ lookup('file', item) }}"
   with_items:
-    - "{{ deploy_user_public_keys }}"
-  when: deploy_user_public_keys is defined
+    - "{{ std_user_public_keys }}"
 
-
-- name: Add deploy user to sudoers
+- name: Add user to sudoers
   lineinfile:
     dest: /etc/sudoers
-    regexp: "{{ deploy_user }} ALL"
-    line: "{{ deploy_user }} ALL=(ALL) NOPASSWD:ALL"
+    regexp: "{{ std_user }} ALL"
+    line: "{{ std_user }} ALL=(ALL) NOPASSWD:ALL"
     state: present
