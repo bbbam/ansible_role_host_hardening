@@ -1,7 +1,7 @@
 ---
 - name: Set timezone variables
   copy:
-    content: Etc/UTC
+    content: " {{ timezone }} "
     dest: /etc/timezone
     owner: root
     group: root
