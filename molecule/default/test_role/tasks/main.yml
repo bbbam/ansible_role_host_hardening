@@ -5,6 +5,9 @@
 - name: Include tests for apt tasks
   include_tasks: apt.yml
 
+- name: Include tests for openntpd tasks
+  include_tasks: ntp.yml
+
 - name: Ensure sshguard is installed
   service:
     name: sshguard
@@ -14,11 +17,5 @@
 - name: Ensure ssh is installed
   service:
     name: ssh
-    state: started
-    enabled: yes
-
-- name: Ensure opennttpd is installed
-  service:
-    name: openntpd
     state: started
     enabled: yes
