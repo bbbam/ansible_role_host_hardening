@@ -1,0 +1,21 @@
+---
+- name: Ensure ssh is installed
+  service:
+    name: ssh
+    state: started
+    enabled: yes
+
+- name: Ensure SSH Settings are proper
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item }}"
+    line: "{{ item }}"
+    state: present
+  check_mode: yes
+  register: conf
+  with_items:
+    - "PasswordAuthentication no"
+    - "PermitRootLogin no"
+    - "Port 12022"
+    - "PermitTunnel no"
+  failed_when: (conf is changed) or (conf is failed)

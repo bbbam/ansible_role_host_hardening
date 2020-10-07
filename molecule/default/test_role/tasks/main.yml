@@ -8,14 +8,11 @@
 - name: Include tests for openntpd tasks
   include_tasks: ntp.yml
 
+- name: Include tests for ssh tasks
+  include_tasks: ssh.yml
+
 - name: Ensure sshguard is installed
   service:
     name: sshguard
-    state: started
-    enabled: yes
-
-- name: Ensure ssh is installed
-  service:
-    name: ssh
     state: started
     enabled: yes
