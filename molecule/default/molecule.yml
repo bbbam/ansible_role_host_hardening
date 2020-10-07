@@ -20,5 +20,6 @@ provisioner:
       all:
         vars:
           std_user_public_keys: molecule/default/test_key
+          admin_email: test@email.com
 verifier:
   name: ansible

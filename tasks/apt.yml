@@ -21,10 +21,18 @@
     pkg: "{{ packages }}"
     update_cache: yes
 
-- name: Adjust APT update intervals
+- name: Copy APT update intervals
   copy:
     src: etc/apt/apt.conf.d/10periodic
     dest: /etc/apt/apt.conf.d/10periodic
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Update unattended upgrades
+  template:
+    src: apt/50unattended-upgrades.j2
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
     owner: root
     group: root
     mode: 0644

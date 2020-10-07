@@ -1,0 +1,25 @@
+---
+- name: Get user if it exists
+  getent:
+    database: passwd
+    key: user
+
+- name: Assert user exists
+  assert:
+    that: getent_passwd['user'] is defined
+
+- name: Assert user UID is correct
+  assert:
+    that: getent_passwd['user'].1 == '9999'
+
+- name: Assert user home directory is correct
+  assert:
+    that: getent_passwd['user'].4 == '/home/user'
+
+- name: Get authorized_keys
+  shell: cat "{{ getent_passwd['user'][4]  }}"/.ssh/authorized_keys
+  register: authorized_keys
+
+- name: Assert authorized key is correct
+  assert:
+    that: authorized_keys.stdout == "ssh-rsa JUNKKEY "

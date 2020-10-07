@@ -1,6 +1,9 @@
 ---
-- name: Include tests for user
-  include_tasks: user.yaml
+- name: Include tests for user tasks
+  include_tasks: user.yml
+
+- name: Include tests for apt tasks
+  include_tasks: apt.yml
 
 - name: Ensure sshguard is installed
   service:
@@ -19,11 +22,3 @@
     name: openntpd
     state: started
     enabled: yes
-
-- name: Get packages
-  package_facts:
-    manager: auto
-
-- name: Check iptables is installed
-  assert:
-    that: packages['iptables'] is defined
