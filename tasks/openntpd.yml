@@ -1,7 +1,7 @@
 ---
 - name: Set timezone variables
   copy:
-    content: " {{ timezone }} "
+    content: "{{ timezone }}"
     dest: /etc/timezone
     owner: root
     group: root
@@ -13,6 +13,7 @@
 - name: Add ntpd.conf
   lineinfile:
     dest: /etc/openntpd/ntpd.conf
+    backrefs: true
     regexp: "{{ item }}"
     line: "{{ ntp_settings[item] }}"
     state: present
