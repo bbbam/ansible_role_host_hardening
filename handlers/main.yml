@@ -4,6 +4,9 @@
     name: "openntpd"
     state: restarted
 
+- name: update timezone
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+
 - name: restart ssh
   service:
     name: ssh

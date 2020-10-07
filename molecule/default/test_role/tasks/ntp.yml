@@ -1,0 +1,28 @@
+---
+- name: Ensure opennttpd is installed
+  service:
+    name: openntpd
+    state: started
+    enabled: yes
+
+- name: Get contents of openntpd conf fire
+  stat:
+    path: /etc/openntpd/ntpd.conf
+    checksum_algorithm: md5
+    get_checksum: true
+  register: openntpd_conf
+
+- name: Assert contents of openntpd conf are proper
+  assert:
+    that: openntpd_conf.stat.checksum == 'd79975ee6ca862279de0f4d8d68833f6'
+
+- name: Get contents of /etc/timezone  fire
+  stat:
+    path: /etc/timezone
+    checksum_algorithm: md5
+    get_checksum: true
+  register: tz_conf
+
+- name: Assert contents of /etc/timezone are proper
+  assert:
+    that: tz_conf.stat.checksum == '4f24b133ba38d8fd565168742c9aedeb'

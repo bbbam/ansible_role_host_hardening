@@ -18,6 +18,7 @@
 - name: Add user to sudoers
   lineinfile:
     dest: /etc/sudoers
-    regexp: "{{ std_user }} ALL"
+    backrefs: true
+    regexp: "^{{ std_user }} ALL="
     line: "{{ std_user }} ALL=(ALL) NOPASSWD:ALL"
     state: present
