@@ -21,6 +21,5 @@ provisioner:
         vars:
           std_user_public_keys: molecule/default/test_key
           admin_email: test@email.com
-          timezone: Etc/UTC
 verifier:
   name: ansible

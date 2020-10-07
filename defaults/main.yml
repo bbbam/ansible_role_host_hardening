@@ -22,6 +22,8 @@ ntp_settings:
   "^servers 2": "servers 2.debian.pool.ntp.org"
   "^servers 3": "servers 3.debian.pool.ntp.org"
 
+timezone: "Etc/UTC"
+
 # sshd settings
 sshd_settings:
   "^PasswordAuthentication": "PasswordAuthentication no"
