@@ -5,7 +5,7 @@
     state: started
     enabled: yes
 
-- name: Get contents of openntpd conf fire
+- name: Get contents of openntpd conf file
   stat:
     path: /etc/openntpd/ntpd.conf
     checksum_algorithm: md5
