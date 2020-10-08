@@ -4,12 +4,18 @@
 
 - name: Include tests for apt tasks
   include_tasks: apt.yml
+  
+- name: Populate service facts
+  service_facts:
 
 - name: Include tests for openntpd tasks
   include_tasks: ntp.yml
 
 - name: Include tests for ssh tasks
   include_tasks: ssh.yml
+
+- name: Include tests for ufw tasks
+  include_tasks: ufw.yml
 
 - name: Ensure sshguard is installed
   service:

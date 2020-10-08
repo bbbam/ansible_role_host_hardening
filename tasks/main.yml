@@ -13,11 +13,8 @@
 - name: Include required tasks for SSHd
   include_tasks: ssh.yml
 
-- name: Include required tasks for iptables
-  include_tasks: iptables.yml
-
-- name: Include required tasks for sshguard
-  include_tasks: sshguard.yml
+- name: Include required tasks for ufw
+  include_tasks: ufw.yml
 
 - name: Include required tasks for deployment deployment user
   include_tasks: user.yml

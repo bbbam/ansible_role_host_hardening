@@ -12,8 +12,8 @@
       - sudo
       - openntpd
       - openssh-server
-      - netfilter-persistent
-      - iptables-persistent
+      - ufw
+      - aptitude
 
 - name: Get apt periodic conf file
   stat:

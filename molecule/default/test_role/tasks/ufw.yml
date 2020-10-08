@@ -1,0 +1,30 @@
+---
+- name: Ensure openntpd is running
+  assert:
+    that: (ansible_facts.services.ufw is defined) and (ansible_facts.services.ufw.state == 'running')
+
+- name: Ensure UFW default settings are proper
+  lineinfile:
+    path: /etc/default/ufw
+    regexp: "^{{ item }}"
+    line: "{{ item }}"
+    state: present
+  check_mode: yes
+  register: conf
+  with_items:
+    - IPV6=yes
+    - DEFAULT_INPUT_POLICY=DROP
+    - DEFAULT_OUTPUT_POLICY=ACCEPT
+    - DEFAULT_FORWARD_POLICY=DROP
+    - DEFAULT_APPLICATION_POLICY=SKIP
+  failed_when: (conf is changed) or (conf is failed)
+
+- name: Get ufw rules
+  shell: ufw status | grep 12022
+  args:
+    executable: /bin/bash
+  register: rules
+
+- name: Verify ufw rules are present
+  assert:
+    that: rules.rc == 0

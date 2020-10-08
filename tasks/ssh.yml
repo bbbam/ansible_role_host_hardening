@@ -1,9 +1,9 @@
 ---
-- name: Ensure sshd_config setting
+- name: Ensure sshd_config settings
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "{{ item }}"
-    line: "{{ sshd_settings[item] }}"
+    regexp: "^{{ item }}"
+    line: "{{ item }} {{ sshd_settings[item] }}"
     state: present
   notify: restart ssh
   with_items:
