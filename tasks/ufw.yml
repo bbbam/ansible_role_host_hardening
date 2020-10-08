@@ -1,0 +1,27 @@
+---
+- name: Enable ufw
+  ufw:
+    state: "{{ ufw_state }}"
+    logging: "{{ ufw_logging }}"
+
+- name: Apply custom ufw rules
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+    from_ip: "{{ ip if item.ip is defined | default(omit) }}"
+  with_items: "{{ ufw_rules | list }}"
+
+- name: Apply UFW default settings
+  template:
+    src: etc/default/ufw.j2
+    dest: /etc/default/ufw
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart ufw
+
+- name: Reload ufw
+  ufw:
+    state: reloaded
+  when: ufw_reload | bool

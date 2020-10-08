@@ -12,8 +12,9 @@ packages:
   - sudo
   - openntpd
   - openssh-server
-  - netfilter-persistent
-  - iptables-persistent
+  - ufw
+  - aptitude
+  - iptables
 
 # openntpd settings
 ntp_settings:
@@ -26,34 +27,29 @@ timezone: "Etc/UTC"
 
 # sshd settings
 sshd_settings:
-  "^PasswordAuthentication": "PasswordAuthentication no"
-  "^PermitRootLogin": "PermitRootLogin no"
-  "^PermitTunnel": "PermitTunnel no"
-  "^Port ": "Port 12022"
+  "PasswordAuthentication": "no"
+  "PermitRootLogin": "no"
+  "PermitTunnel": "no"
+  "Port": "12022"
 
-# sshguard settings
-sshguard_block_time: 120
-sshguard_detection_time: 1800
-sshguard_threshold: 30
+# UFW Defaults
 
-sshguard_config_items:
-  - sshguard.conf
-  - whitelist
+# UFW
+ufw_state: enabled
+ufw_logging: on
+ufw_reload: yes
 
-sshguard_config_path: /etc/sshguard
+ufw_enable_ipv6: "yes"
+ufw_default_input_policy: DROP
+ufw_default_output_policy: ACCEPT
+ufw_default_forward_policy: DROP
+ufw_default_application_policy: SKIP
+ufw_default_ipt_modules: ""
 
-sshguard_service: sshguard
-sshguard_service_enabled: yes
-sshguard_service_state: started
+ufw_rules:
+  - { proto: "tcp", port: "{{ sshd_settings.Port }}", rule: "allow", comment: "Allow SSH Connections" }
 
-sshguard_whitelist:
-  - comment: IPv4 localhost
-    address: 127.0.0.0/8
-  - comment: IPv6 localhost
-    address: ::1
-
-sshguard_backend: /usr/lib/x86_64-linux-gnu/sshg-fw-nft-sets
-sshguard_logreader: "LANG=C /bin/journalctl -afb -p info -n1 -o cat SYSLOG_FACILITY=4 SYSLOG_FACILITY=10"
+ufw_applications: []
 
 # sysctl settings. For more options, consult the relevant CIS guide
 sysctl_settings:
@@ -85,24 +81,3 @@ sysctl_settings:
   "fs.protected_symlinks": 1
   "kernel.kptr_restrict": 1
   "kernel.perf_event_paranoid": 2
-
-# iptables
-firewall_state: started
-firewall_enabled_at_boot: true
-
-firewall_flush_rules_and_chains: true
-
-firewall_allowed_tcp_ports:
-  - "12022"
-
-firewall_allowed_udp_ports: []
-firewall_forwarded_tcp_ports: []
-firewall_forwarded_udp_ports: []
-firewall_additional_rules: []
-firewall_enable_ipv6: true
-firewall_ip6_additional_rules: []
-firewall_log_dropped_packets: true
-
-# Set to true to ensure other firewall management software is disabled.
-firewall_disable_firewalld: true
-firewall_disable_ufw: true

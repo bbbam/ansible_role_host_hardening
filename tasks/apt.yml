@@ -10,11 +10,6 @@
     upgrade: dist
     force_apt_get: true
 
-- name: Install aptitude
-  apt:
-    pkg: aptitude
-    state: present
-
 - name: Install required packages
   apt:
     state: present

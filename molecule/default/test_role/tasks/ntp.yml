@@ -1,9 +1,7 @@
 ---
-- name: Ensure opennttpd is installed
-  service:
-    name: openntpd
-    state: started
-    enabled: yes
+- name: Ensure openntpd is running
+  assert:
+    that: (ansible_facts.services.openntpd is defined) and (ansible_facts.services.openntpd.state == 'running')
 
 - name: Get contents of openntpd conf file
   stat:
@@ -16,7 +14,7 @@
   assert:
     that: openntpd_conf.stat.checksum == 'd79975ee6ca862279de0f4d8d68833f6'
 
-- name: Get contents of /etc/timezone  fire
+- name: Get contents of /etc/timezone file
   stat:
     path: /etc/timezone
     checksum_algorithm: md5
