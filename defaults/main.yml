@@ -14,7 +14,6 @@ packages:
   - openssh-server
   - ufw
   - aptitude
-  - iptables
 
 # openntpd settings
 ntp_settings:

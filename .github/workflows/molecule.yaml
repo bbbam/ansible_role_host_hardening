@@ -1,36 +1,31 @@
 ---
-name: Molecule CI
+name: Molecule
 
 on:
-  - push
+  push:
+    branches:
+      - master
+      - release/v*
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-        with:
-          path: "${{ github.repository }}"
-      - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
-        with:
-          command: lint
-  test:
-    needs:
-      - lint
+  molecule:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        image:
-          - ubuntu
+        scenario:
+          - default
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           path: "${{ github.repository }}"
-      - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
+      - name: Molecule
+        uses: gofrolist/molecule-action@v2
         with:
-          image: "${{ matrix.image }}"
-          options: parallel
+          molecule_options: --debug --base-config molecule/_shared/base.yml
+          molecule_command: test
+          molecule_args: --scenario-name ${{ matrix.scenario }}
