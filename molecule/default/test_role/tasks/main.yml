@@ -4,7 +4,7 @@
 
 - name: Include tests for apt tasks
   include_tasks: apt.yml
-  
+
 - name: Populate service facts
   service_facts:
 
@@ -16,9 +16,5 @@
 
 - name: Include tests for ufw tasks
   include_tasks: ufw.yml
-
-- name: Ensure sshguard is installed
-  service:
-    name: sshguard
-    state: started
-    enabled: yes
+  tags:
+    - molecule-notest
