@@ -15,12 +15,11 @@
     that: openntpd_conf.stat.checksum == 'd79975ee6ca862279de0f4d8d68833f6'
 
 - name: Get contents of /etc/timezone file
-  stat:
-    path: /etc/timezone
-    checksum_algorithm: md5
-    get_checksum: true
-  register: tz_conf
+  shell: cat /etc/timezone
+  args:
+    executable: /bin/bash
+  register: contents
 
 - name: Assert contents of /etc/timezone are proper
   assert:
-    that: tz_conf.stat.checksum == '4f24b133ba38d8fd565168742c9aedeb'
+    that: contents.stdout == 'Etc/UTC'

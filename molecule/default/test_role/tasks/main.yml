@@ -18,9 +18,3 @@
   include_tasks: ufw.yml
   tags:
     - molecule-notest
-
-- name: Ensure sshguard is installed
-  service:
-    name: sshguard
-    state: started
-    enabled: yes
